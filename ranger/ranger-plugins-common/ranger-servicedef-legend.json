@@ -1,0 +1,66 @@
+{
+	"id": 204,
+	"name": "legend",
+	"displayName": "Legend",
+	"implClass": "org.apache.ranger.services.legend.RangerServiceLegend",
+	"label": "Legend",
+	"description": "Legend",
+	"guid": "3e1afb5a-184a-4e82-9d9c-87a5cacc243D",
+	"resources": 
+	[
+		{
+			"itemId": 1,
+			"name": "path",
+			"type": "path",
+			"level": 10,
+			"parent": "",
+			"mandatory": true,
+			"lookupSupported": true,
+			"recursiveSupported": true,
+			"excludesSupported": false,
+			"matcher": "org.apache.ranger.plugin.resourcematcher.RangerPathResourceMatcher",
+			"matcherOptions": { "wildCard":true, "ignoreCase":false },
+			"validationRegEx":"",
+			"validationMessage": "",
+			"uiHint":"",
+			"label": "Resource Path",
+			"description": "Alloy Service path"
+		}
+	],
+
+	"accessTypes": 
+	[
+		{
+			"itemId": 1,
+			"name": "read",
+			"label": "read"
+		}
+	],
+
+	"configs": 
+	[
+		{
+			"itemId": 1,
+			"name": "domain",
+			"type": "string",
+			"mandatory": true,
+			"validationRegEx":"",
+			"validationMessage": "",
+			"uiHint":"",
+			"label": "Domain"
+		}
+	],
+
+	"enums": 
+	[
+		
+	],
+
+	"contextEnrichers": 
+	[
+	],
+
+	"policyConditions": 
+	[
+	]
+}
