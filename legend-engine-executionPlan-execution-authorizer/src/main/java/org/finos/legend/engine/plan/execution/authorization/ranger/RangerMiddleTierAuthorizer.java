@@ -15,6 +15,7 @@ import org.finos.legend.engine.shared.core.identity.Identity;
 import java.util.Collections;
 
 public class RangerMiddleTierAuthorizer implements PlanExecutionAuthorizer {
+
     private final org.apache.ranger.plugin.service.RangerBasePlugin plugin;
 
     public RangerMiddleTierAuthorizer()
@@ -27,9 +28,13 @@ public class RangerMiddleTierAuthorizer implements PlanExecutionAuthorizer {
     @Override
     public PlanExecutionAuthorizerOutput evaluate(Identity identity, ExecutionPlan executionPlan, PlanExecutionAuthorizerInput authorizationInput) throws Exception {
         RangerAccessResourceImpl resource = new RangerAccessResourceImpl();
-        resource.setValue("path", "/v1/legend/test/service");
-        RangerAccessRequest request = new RangerAccessRequestImpl(resource, "read", identity.getName(), Collections.emptySet(), Collections.emptySet());
+        //`resource.setValue("path", "/v1/legend/test/service");
+        resource.setValue("service-guid", "service1GUID@intergration1/service1/");
+//        resource.setValue("table", "tableB");
+ //       resource.setValue("column", "c2");
+        RangerAccessRequest request = new RangerAccessRequestImpl(resource, "execute_service", identity.getName(), Collections.emptySet(), Collections.emptySet());
         RangerAccessResult result = plugin.isAccessAllowed(request);
+        System.out.println("Result " + result);
         ExecutionAuthorization executionAuthorization = result != null && result.getIsAllowed() ?
                 ExecutionAuthorization.authorize("", "", Maps.immutable.empty(), Maps.immutable.empty(),"",  Lists.immutable.empty()) :
                 ExecutionAuthorization.deny("", "", Maps.immutable.empty(), Maps.immutable.empty(), "", Lists.immutable.empty());
@@ -47,7 +52,7 @@ public class RangerMiddleTierAuthorizer implements PlanExecutionAuthorizer {
        middleTierAuthorizer.isMiddleTierPlan(null);
         try {
             Thread.sleep(6000);
-            middleTierAuthorizer.evaluate(new Identity("gilroyFail"), null, null);
+            middleTierAuthorizer.evaluate(new Identity("admin"), null, null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
