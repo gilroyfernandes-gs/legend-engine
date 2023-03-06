@@ -29,10 +29,9 @@ public class RangerMiddleTierAuthorizer implements PlanExecutionAuthorizer {
     public PlanExecutionAuthorizerOutput evaluate(Identity identity, ExecutionPlan executionPlan, PlanExecutionAuthorizerInput authorizationInput) throws Exception {
         RangerAccessResourceImpl resource = new RangerAccessResourceImpl();
         //`resource.setValue("path", "/v1/legend/test/service");
-        resource.setValue("service-guid", "service1GUID@intergration1/service1/");
-//        resource.setValue("table", "tableB");
- //       resource.setValue("column", "c2");
-        RangerAccessRequest request = new RangerAccessRequestImpl(resource, "execute_service", identity.getName(), Collections.emptySet(), Collections.emptySet());
+        resource.setValue("service-guid", authorizationInput.getContextParams().get("legend.serviceUniqueId"));
+        String accessType = "SERVICE_EXECUTION".equals(authorizationInput.getContextParams().get("legend.usageContext")) ? "execute_service" : "explore_data";
+        RangerAccessRequest request = new RangerAccessRequestImpl(resource, accessType, identity.getName(), Collections.emptySet(), Collections.emptySet());
         RangerAccessResult result = plugin.isAccessAllowed(request);
         System.out.println("Result " + result);
         ExecutionAuthorization executionAuthorization = result != null && result.getIsAllowed() ?

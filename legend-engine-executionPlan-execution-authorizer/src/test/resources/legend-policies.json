@@ -37,13 +37,109 @@
             }
           ],
           "users": [
-            "ferngi"
+            "user1"
           ],
           "delegateAdmin": false
         }
       ],
       "serviceType": "legend",
       "isDenyAllElse": false
+    },
+    {
+      "id": 32,
+      "guid": "b99f996a-0211-4db3-ae84-6c3238a9c775",
+      "isEnabled": true,
+      "createdBy": "Admin",
+      "updatedBy": "Admin",
+      "createTime": "20160804-09:51:46.000-+0100",
+      "updateTime": "20160804-09:51:46.000-+0100",
+      "version": 1,
+      "service": "legend",
+      "name": "test",
+      "policyType": 0,
+      "policyPriority": 0,
+      "resourceSignature": "76c5c96ac7a43faee9bf2462fbff0a3d93da9e1a5c551c2411296019f1cbfa17",
+      "isAuditEnabled": true,
+      "resources": {
+        "service-guid": {
+          "values": [
+            "service2GUID@/integration2/compl/getComplOrderRawCount"
+          ],
+          "isExcludes": true,
+          "isRecursive": true
+        }
+      },
+      "allowExceptions": [
+        {
+          "accesses": [
+            {
+              "type": "execute_service",
+              "isAllowed": true
+            }
+          ],
+          "users": [
+            "ferngi"
+          ],
+          "delegateAdmin": false
+        }
+      ],
+      "policyItems": [
+        {
+          "accesses": [
+            {
+              "type": "execute_service",
+              "isAllowed": true
+            }
+          ],
+          "users": [
+            "{USER}"
+          ],
+          "delegateAdmin": false
+        }
+      ],
+      "serviceType": "legend",
+      "isDenyAllElse": false
+    },
+    {
+      "id": 33,
+      "guid": "b99f996a-0211-4db3-ae84-6c3238a9c775",
+      "isEnabled": true,
+      "createdBy": "Admin",
+      "updatedBy": "Admin",
+      "createTime": 1678028116141,
+      "updateTime": 1678030021998,
+      "version": 5,
+      "service": "legend",
+      "name": "test",
+      "policyType": 0,
+      "policyPriority": 0,
+      "resourceSignature": "d21baa7f3c4f1c66a377d41b57e1dca7bd0d6f5184f1e82644f7ecee08726eac",
+      "isAuditEnabled": true,
+      "resources": {
+        "service-guid": {
+          "values": [
+            "service2GUID"
+          ],
+          "isExcludes": false,
+          "isRecursive": true
+        }
+      },
+      "policyItems": [
+        {
+          "accesses": [
+            {
+              "type": "execute_service",
+              "isAllowed": true
+            }
+          ],
+          "users": [
+            "ferngi"
+          ],
+          "delegateAdmin": false
+        }
+      ],
+      "serviceType": "legend",
+      "isDenyAllElse": true
     }
   ],
   "serviceDef": {
