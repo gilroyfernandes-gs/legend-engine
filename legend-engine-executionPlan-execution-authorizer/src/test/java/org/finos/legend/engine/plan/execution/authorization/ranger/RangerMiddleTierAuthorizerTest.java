@@ -2,14 +2,19 @@ package org.finos.legend.engine.plan.execution.authorization.ranger;
 
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Maps;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.finos.legend.engine.plan.execution.authorization.PlanExecutionAuthorizerInput;
 import org.finos.legend.engine.plan.execution.authorization.PlanExecutionAuthorizerOutput;
 import org.finos.legend.engine.protocol.pure.v1.model.executionPlan.SingleExecutionPlan;
 import org.finos.legend.engine.shared.core.identity.Identity;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 public class RangerMiddleTierAuthorizerTest {
     private static final Logger LOG = LoggerFactory.getLogger(RangerMiddleTierAuthorizerTest.class);
@@ -54,12 +59,51 @@ public class RangerMiddleTierAuthorizerTest {
             testRequest(sut, user, undefinedServiceGUID, false);
             testRequest(sut, unknownUser, undefinedServiceGUID, true);
     }
-    private static void testRequest(RangerMiddleTierAuthorizer sut, String user, String serviceGUID, Boolean expected) throws Exception {
+
+    @Test
+    public void testRowFilters() throws Exception{
+        RangerMiddleTierAuthorizer sut = new RangerMiddleTierAuthorizer();
+
+        String user = "admin";
+        String database = "memsql_secdic";
+        String port = "9001";
+        String host =  "dev.memsql.url.com";
+        String undefinedServiceGUID = "serviceNotDefined@/integration2/compl/getComplOrderRawCount";
+        ImmutableMap<String, String> resourceContext = new UnifiedMap<>(
+                Tuples.pair("legend.servicePath", "/api/foobar"),
+                Tuples.pair( "legend.database", database),
+                Tuples.pair("legend.host", host),
+                Tuples.pair("legend.port", port),
+                Tuples.pair("legend.usageContext", "EXPLORE_DATA")).toImmutable();
+
         SingleExecutionPlan plan = new SingleExecutionPlan();
         plan.kerberos = user;
         plan.authDependent = false;
+
+        PlanExecutionAuthorizerInput authorizerInput = new PlanExecutionAuthorizerInput.ExecutionAuthorizationInputBuilder(
+                PlanExecutionAuthorizerInput.ExecutionMode.SERVICE_EXECUTION)
+                .withResourceContext(resourceContext)
+                .build();
+        Optional<String> result = sut.getRowFilter(new Identity(user), plan, authorizerInput);
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.isPresent());
+        Assert.assertEquals("col in USD, GBP", result.get());
+
+        result = sut.getRowFilter(new Identity("unAuthorizedUser"), plan, authorizerInput);
+        Assert.assertNotNull(result);
+        Assert.assertFalse(result.isPresent());
+    }
+    private static void testRequest(RangerMiddleTierAuthorizer sut, String user, String serviceGUID, Boolean expected) throws Exception {
         ImmutableMap<String, String> resourceContext = Maps.immutable.of("legend.servicePath", "/api/foobar", "legend.serviceUniqueId", serviceGUID,
                 "legend.usageContext", "SERVICE_EXECUTION");
+        testRequest(sut, user, expected, resourceContext);
+    }
+
+    private static void testRequest(RangerMiddleTierAuthorizer sut, String user, Boolean expected, ImmutableMap<String, String> resourceContext) throws Exception {
+        SingleExecutionPlan plan = new SingleExecutionPlan();
+        plan.kerberos = user;
+        plan.authDependent = false;
+
         PlanExecutionAuthorizerInput authorizerInput = new PlanExecutionAuthorizerInput.ExecutionAuthorizationInputBuilder(
                 PlanExecutionAuthorizerInput.ExecutionMode.SERVICE_EXECUTION)
                  .withResourceContext(resourceContext)

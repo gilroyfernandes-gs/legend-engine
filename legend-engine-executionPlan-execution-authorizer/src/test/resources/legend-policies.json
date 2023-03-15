@@ -106,8 +106,8 @@
       "isEnabled": true,
       "createdBy": "Admin",
       "updatedBy": "Admin",
-      "createTime": 1678028116141,
-      "updateTime": 1678030021998,
+      "createTime": "20160804-09:51:46.000-+0100",
+      "updateTime": "20160804-09:51:46.000-+0100",
       "version": 5,
       "service": "legend",
       "name": "test",
@@ -140,6 +140,65 @@
       ],
       "serviceType": "legend",
       "isDenyAllElse": true
+    },
+    {
+      "id": 34,
+      "guid": "67211406-acdf-462d-ac0d-da557ddef509",
+      "isEnabled": true,
+      "createdBy": "Admin",
+      "updatedBy": "Admin",
+      "createTime": "20160804-09:51:46.000-+0100",
+      "updateTime": "20160804-09:51:46.000-+0100",
+      "version": 1,
+      "service": "legend",
+      "name": "rf",
+      "policyType": 2,
+      "policyPriority": 0,
+      "resourceSignature": "c346169b9a7f3e685505e63dded206174f1159f146a2cc691b6b1ae04889a121",
+      "isAuditEnabled": true,
+      "resources": {
+        "database": {
+          "values": [
+            "memsql_secdic"
+          ],
+          "isExcludes": false,
+          "isRecursive": false
+        },
+        "port": {
+          "values": [
+            "9001"
+          ],
+          "isExcludes": false,
+          "isRecursive": false
+        },
+        "host": {
+          "values": [
+            "dev.memsql.url.com"
+          ],
+          "isExcludes": false,
+          "isRecursive": false
+        }
+      },
+      "rowFilterPolicyItems": [
+        {
+          "accesses": [
+            {
+              "type": "explore_data",
+              "isAllowed": true
+            }
+          ],
+          "users": [
+            "admin",
+            "knox"
+          ],
+          "delegateAdmin": false,
+          "rowFilterInfo": {
+            "filterExpr": "col in USD, GBP"
+          }
+        }
+      ],
+      "serviceType": "legend",
+      "isDenyAllElse": false
     }
   ],
   "serviceDef": {
@@ -255,7 +314,96 @@
       }
     ],
     "dataMaskDef": {},
-    "rowFilterDef": {}
+    "rowFilterDef":{
+      "accessTypes": [
+        {
+          "itemId": 2,
+          "name": "explore_data",
+          "label": "Explore Data"
+        }
+      ],
+      "resources": [
+        {
+          "itemId": 2,
+          "name": "database",
+          "type": "string",
+          "level": 10,
+          "mandatory": true,
+          "lookupSupported": true,
+          "recursiveSupported": false,
+          "excludesSupported": false,
+          "matcher": "org.apache.ranger.plugin.resourcematcher.RangerPathResourceMatcher",
+          "matcherOptions": {
+            "wildCard": "true",
+            "ignoreCase": "false"
+          },
+          "uiHint": "{ \"singleValue\":true }",
+          "label": "Database Name",
+          "description": "Database Name",
+          "isValidLeaf": false
+        },
+        {
+          "itemId": 3,
+          "name": "host",
+          "type": "string",
+          "level": 30,
+          "parent": "database",
+          "mandatory": false,
+          "lookupSupported": true,
+          "recursiveSupported": false,
+          "excludesSupported": false,
+          "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+          "matcherOptions": {
+            "wildCard": "true",
+            "ignoreCase": "false"
+          },
+          "uiHint": "{ \"singleValue\":true }",
+          "label": "Database Host",
+          "description": "Database Host",
+          "isValidLeaf": false
+        },
+        {
+          "itemId": 4,
+          "name": "port",
+          "type": "string",
+          "level": 40,
+          "parent": "host",
+          "mandatory": false,
+          "lookupSupported": true,
+          "recursiveSupported": false,
+          "excludesSupported": false,
+          "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+          "matcherOptions": {
+            "wildCard": "true",
+            "ignoreCase": "false"
+          },
+          "uiHint": "{ \"singleValue\":true }",
+          "label": "Database Port",
+          "description": "Database Port",
+          "isValidLeaf": false
+        },
+        {
+          "itemId": 5,
+          "name": "column",
+          "type": "string",
+          "level": 50,
+          "parent": "port",
+          "mandatory": false,
+          "lookupSupported": false,
+          "recursiveSupported": false,
+          "excludesSupported": false,
+          "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+          "matcherOptions": {
+            "wildCard": "true",
+            "ignoreCase": "false"
+          },
+          "uiHint": "{ \"singleValue\":true }",
+          "label": "Column",
+          "description": "Column",
+          "isValidLeaf": true
+        }
+      ]
+    }
   },
   "auditMode": "audit-default"
 }

@@ -52,7 +52,7 @@
 
     <property>
         <name>ranger.plugin.legend.policy.cache.dir</name>
-        <value>${project.build.directory}</value>
+        <value>./target/cache</value>
         <description>
             Directory where Ranger policies are cached after successful retrieval from the source
         </description>
